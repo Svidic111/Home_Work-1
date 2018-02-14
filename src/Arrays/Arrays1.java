@@ -2,7 +2,7 @@ package Arrays;
 
 import java.util.Scanner;
 
-public class Arrays1 {
+public class Arrays1  {
     public static void main(String[] args) {
         System.out.println("Введите число");
         Scanner inputNum = new Scanner(System.in);

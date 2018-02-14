@@ -1,6 +1,6 @@
 package Arrays;
 
-public class Arrays2 {
+public class Arrays2  {
     public static void main(String[] args) {
         int[][] arr100 = new int[10][10];
         for (int i = 0; i < arr100.length; i++) {
