@@ -9,12 +9,12 @@ public class Loops {
         System.out.println(day + "." + month + "." + year  + " - это " + findSeason2(month));
         Loops.race();
         Loops.multiTable();
-        // Loops.throwCoin();
 
         System.out.println("Введите число от 0 до 9999");
         Scanner inputNum = new Scanner(System.in);
         int number = inputNum.nextInt();
         System.out.println("Сумма цифр числа " + number + " = " + Loops.summNumbers(number));
+        // Loops.throwCoin();
     }
 
     public static String findSeason1(int month) {
@@ -106,9 +106,13 @@ public class Loops {
 
         do {
             double flag = Math.random();
-            if (flag <= 0.5) {
+            if (flag == 0.0) {
+                break;
+            }
+            else if (flag <= 0.5) {
                 System.out.println("tails");
-            } else if (flag > 0.5) {
+            }
+            else if (flag > 0.5) {
                 System.out.println("eagle");
             }
 
