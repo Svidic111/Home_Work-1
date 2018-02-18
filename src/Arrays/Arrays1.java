@@ -20,14 +20,14 @@ public class Arrays1  {
             arrNum[i] = b;
             a /= 10;
         }
-
-       for (int i = 0, j = numLength - 1; i < numLength / 2; i++, j--) {  // зеркалим цифры относительно центра массива
-            int buffer = arrNum[i];
-            arrNum[i] = arrNum[j];
-            arrNum[j] = buffer;
+        String result = " - палиндром";
+       for (int i = 0, j = numLength - 1; i < numLength / 2; i++, j--) {  // проверка палиндромности массива
+            if(arrNum[i] != arrNum[j]) {
+                result = " -  не палиндром";
+            }
         }
-
-       StringBuilder sb=new StringBuilder(); // склеиваем отсвапленный массив в число
+       return result;
+      /* StringBuilder sb=new StringBuilder(); // склеиваем отсвапленный массив в число
        for(int i=0; i < arrNum.length; i++)
            sb.append(arrNum[i]);
        int reverseNum = (int) Long.parseLong(sb.toString());
@@ -39,7 +39,7 @@ public class Arrays1  {
         else {
             result = " -  не палиндром";
         }
-        return result;
+        return result;*/
     }
 
 
