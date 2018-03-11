@@ -11,16 +11,37 @@ public class ListChar {
         this.listChar = new char[arrLenght];
     }
 
+    public char[] getListChar() {
+        return listChar;
+    }
+
+    public void increaseSize(int increment) {             // увеличение массива на заданное кол-во ячеек
+        char[] addListChar = new char[increment + this.getFullSize()];
+        System.arraycopy(listChar, 0, addListChar, 0, this.length());
+        listChar = addListChar;
+    }
+
+    public void doubleSize() {                      // увеличение массива в 2 раза
+        char[] addListChar = new char[2 * this.getFullSize()];
+        System.arraycopy(listChar, 0, addListChar, 0, this.length());
+        listChar = addListChar;
+    }
+
     public boolean set(int index, char c) {   // set a char to a place located by the index
-        if (index < listChar.length && index >= 0) {
+        if (index < this.getFullSize() && index >= 0) {
                 listChar[index] = c;
                 return true;
+        }
+        if (index == this.getFullSize()) {
+            this.increaseSize( 1);
+            listChar[index] = c;
+            return true;
         }
         return false;
     }
 
     public int get(int index) {      // get a code of char by the index or -1 in case element wasn't found by the index
-        if (index < listChar.length && index >= 0) {
+        if (index < this.length() && index >= 0) {
             return listChar[index];
         }
         return -1;
@@ -59,7 +80,7 @@ public class ListChar {
     }
 
     public int length() {
-        return listChar.length - getFreeSize();
+        return this.getFullSize() - getFreeSize();
     }
 
     public void clear() {
@@ -91,10 +112,14 @@ public class ListChar {
 
     public boolean add(char e) {
         if (this.getFreeSize() > 0) {
-            listChar[this.length()] = e;
+            this.set(this.length(), e);
             return true;
         }
-        return false;
+        else {
+            this.increaseSize(1);
+            this.set(this.length(), e);
+            return true;
+        }
     }
 
     public int indexOf(char c) {     // return index of found element else if not then -1
@@ -107,12 +132,12 @@ public class ListChar {
     }
 
     public boolean addAll(ListChar listChar) {
-        if (this.getFreeSize() < listChar.length()) {
-            return false;
+        while (this.getFreeSize() < listChar.length()) {
+            this.doubleSize();
         }
-        else for (int i = 0; i < listChar.length(); i++) {
+        for (int i = 0; i < listChar.length(); i++) {
             this.set(this.length(), (char) listChar.get(i));    // после каждой итерации значение this.length() будет увелич-ся на +1!!!
-            }
+        }
         return true;
     }
 
@@ -121,7 +146,7 @@ public class ListChar {
         for (int i = 0; i < this.length(); i++) {
                 System.out.print((char) this.get(i) + ";\t");
         }
-        System.out.print("}");
+        System.out.println("}");
     }
 
     public void sort(Direction d) {

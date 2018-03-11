@@ -2,35 +2,28 @@ package Task9;
 
 public class Main {
     public static void main(String[] args) {
-//        ListChar list1 = new ListChar(10);
-//        list1.set(0, 'a');
-//        list1.set(1, '3');
-//
-//        ListChar list3 = new ListChar(10);
-//        list3.set(0, 'a');
-//        list3.set(1, '3');
+        ListChar list1 = new ListChar(3);
+        list1.set(0, 'w');
+        list1.set(1, 'm');
+        list1.set(2, 'x');
+        list1.set(3, 'v');
 
-        SetChar list2 = new SetChar();
-        list2.set(0, 'b');
-        list2.set(1, 'a');
-        list2.set(2, 'h');
-        list2.set(3, 'x');
-        list2.set(4, 'y');
+        ListChar list2 = new ListChar(6);
+        list2.set(0, 'x');
+        list2.set(1, 'c');
+        list2.set(2, 't');
+        list2.set(3, '5');
 
+        System.out.println(list1.addAll(list2));
+        list1.printArray();
 
-//        System.out.println(list2.length());
-//        System.out.println(list1.getFullSize());
-//        System.out.println(list1.equals(list3));
-//        System.out.println(list2.add('k'));
-//        System.out.println(list2.get(3));
-//        System.out.println(list2.indexOf('H'));
-//        System.out.println(list1.addAll(list2));
-//        list1.sort(Direction.DESC);
+        SetChar list3 = new SetChar(2);
+        list3.set(0, 'b');
+        list3.set(1, 'a');
 
-        System.out.println(list2.add('k'));
-        list2.printArray();
-
-
-
+        System.out.println(list3.getFullSize());
+        System.out.println(list3.addAll(list1));
+        System.out.println(list3.getFullSize());
+        list3.printArray();
     }
 }
