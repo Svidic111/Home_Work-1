@@ -92,7 +92,7 @@ public class Game {
         проверка на роял-флэш
          */
         Card royalFlushTopCard = null;
-        if (straightflushTopCard.getRankInt() == 14){
+        if (straightflushTopCard != null && straightflushTopCard.getRankInt() == 14){
             royalFlushTopCard = new Card(straightflushTopCard.getRank(), straightflushTopCard.getSuit());
         }
         /*
@@ -145,7 +145,7 @@ public class Game {
 
  //       getHand(player, board);// проверяем комбинации
 //        getHand(byvalyi, board);
-        getHand(balbes, board);
+ //       getHand(balbes, board);
 
     }
 

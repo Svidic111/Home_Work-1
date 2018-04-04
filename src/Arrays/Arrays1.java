@@ -27,19 +27,7 @@ public class Arrays1  {
             }
         }
        return result;
-      /* StringBuilder sb=new StringBuilder(); // склеиваем отсвапленный массив в число
-       for(int i=0; i < arrNum.length; i++)
-           sb.append(arrNum[i]);
-       int reverseNum = (int) Long.parseLong(sb.toString());
 
-       String result = "";                  // проверка палиндромности
-        if (testingNum == reverseNum) {
-            result = " - палиндром";
-        }
-        else {
-            result = " -  не палиндром";
-        }
-        return result;*/
     }
 
 

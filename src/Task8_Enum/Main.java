@@ -21,17 +21,18 @@ public class Main {
         Scanner inputYear = new Scanner(System.in);
         year = inputYear.nextInt();
 
-        System.out.println(year + " " + monthName(month) + " has " + daysInMonth(month, year) + " days");
+        System.out.println(year + " " + daysInMonth(month, year).name() + " has " + daysInMonth(month, year).getNumOfDays() + " days");
     }
 
-    public static int daysInMonth(int month, int year) {
+    public static Month daysInMonth(int month, int year) {
         Month monthName = Month.JANUARY;
-        if(year % 4 == 0) {         // проверяем высокосность года
             switch (month) {
                 case 1:
                     break;
                 case 2:
-                    monthName = Month.FEBRUARY2;
+                    if(year % 4 == 0) {
+                    monthName = Month.FEBRUARY2;}
+                    else monthName = Month.FEBRUARY;
                     break;
                 case 3:
                     monthName = Month.MARCH;
@@ -64,89 +65,9 @@ public class Main {
                     monthName = Month.DECEMBER;
                     break;
             }
-        }
-        else {
-            switch (month) {
-                case 1:
-                    break;
-                case 2:
-                    monthName = Month.FEBRUARY;
-                    break;
-                case 3:
-                    monthName = Month.MARCH;
-                    break;
-                case 4:
-                    monthName = Month.APRIL;
-                    break;
-                case 5:
-                    monthName = Month.MAY;
-                    break;
-                case 6:
-                    monthName = Month.JUNE;
-                    break;
-                case 7:
-                    monthName = Month.JULY;
-                    break;
-                case 8:
-                    monthName = Month.AUGUST;
-                    break;
-                case 9:
-                    monthName = Month.SEPTEMBER;
-                    break;
-                case 10:
-                    monthName = Month.OCTOBER;
-                    break;
-                case 11:
-                    monthName = Month.NOVEMBER;
-                    break;
-                case 12:
-                    monthName = Month.DECEMBER;
-                    break;
-            }
-        }
-        return monthName.getNumOfDays();
-    }
 
-    public static String monthName(int month) {
-        Month monthName = Month.JANUARY;
-        switch (month) {
-            case 1:
-                break;
-            case 2:
-                monthName = Month.FEBRUARY;
-                break;
-            case 3:
-                monthName = Month.MARCH;
-                break;
-            case 4:
-                monthName = Month.APRIL;
-                break;
-            case 5:
-                monthName = Month.MAY;
-                break;
-            case 6:
-                monthName = Month.JUNE;
-                break;
-            case 7:
-                monthName = Month.JULY;
-                break;
-            case 8:
-                monthName = Month.AUGUST;
-                break;
-            case 9:
-                monthName = Month.SEPTEMBER;
-                break;
-            case 10:
-                monthName = Month.OCTOBER;
-                break;
-            case 11:
-                monthName = Month.NOVEMBER;
-                break;
-            case 12:
-                monthName = Month.DECEMBER;
-                break;
-        }
-        return monthName.name();
+
+        return monthName;
     }
 
 }

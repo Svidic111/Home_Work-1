@@ -2,7 +2,7 @@ package HoldemPoker;
 
 import java.util.Scanner;
 
-public class Player {
+public class Player implements HoldemPoker.Abstractions.Player{
     private Card pocketCard1;
     private Card pocketCard2;
     private Hand hand;
@@ -42,7 +42,7 @@ public class Player {
         this.kicker = kicker;
     }
 
-
+    @Override
     public int action() {
         int action;
         int userInput;

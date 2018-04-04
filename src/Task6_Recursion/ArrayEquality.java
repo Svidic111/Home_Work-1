@@ -16,7 +16,7 @@ public class ArrayEquality {
         }
         int j = 0;
         for (int ar1 : arr1) {
-            if (ar1 != arr2[j]) {  // если вместо != поставить == то выдает всегда true... Не знаю что не так.
+            if (ar1 != arr2[j]) {
                 return false;
             }
             j++;

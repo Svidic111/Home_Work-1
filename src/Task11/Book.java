@@ -1,6 +1,6 @@
 package Task11;
 
-public class Book {
+public class Book implements Comparable<Book>{
 
     private static int publishCount = 0;
     public Book() {
@@ -55,5 +55,15 @@ public class Book {
             }
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "{ " + name +", by " + author.getName() + " " + author.getSureName() + ", " + numOfPages + " pages}";
+    }
+
+    @Override
+    public int compareTo(Book book) {
+        return this.numOfPages - book.numOfPages;
     }
 }
