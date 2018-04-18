@@ -1,6 +1,6 @@
 package HoldemPoker;
 
-public class Card {
+public class Card implements Comparable<Card>{
     private final Rank rank;
     private final Suit suit;
 
@@ -15,4 +15,11 @@ public class Card {
     public String toString() {
         return rank + " of " + suit;
     }
+
+    @Override
+    public int compareTo(Card o) {
+        return this.getRankInt() - o.getRankInt();
+    }
+
+
 }

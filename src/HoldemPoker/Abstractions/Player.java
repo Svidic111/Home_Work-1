@@ -1,5 +1,6 @@
 package HoldemPoker.Abstractions;
 
 public interface Player {
-    int action();
+    String action();
+    public void showCards();
 }

@@ -1,5 +1,7 @@
 package HoldemPoker;
 
+import java.util.Arrays;
+
 public class Game {
 
     private static void showBoard(Card[] board) {
@@ -12,141 +14,101 @@ public class Game {
         System.out.println();
     }
 
-    private static Card getHandTop(Card[] hand) { // метод возвращает старшую карту комбинации
-        Card handTopCard = hand[0];
-        for (Card c: hand) {
-            if (c!= null) {
-                if (handTopCard.getRankInt() <= c.getRankInt()) {
-                    handTopCard = c;
-                }
+    private static Player getHand(Player player, Card[] board) {
+
+        Card[] handBoard = new Card[7];
+        handBoard[0] = player.getPocketCard1(); // 1 и 2 карты массива - всегда карты игрока
+        handBoard[1] = player.getPocketCard2();
+        handBoard[2] = board[0];                // остальные - общий борд
+        handBoard[3] = board[1];
+        handBoard[4] = board[2];
+        handBoard[5] = board[3];
+        handBoard[6] = board[4];
+
+        // проверяем комбинации в порядке возрастания
+        PlayerHand hand = CheckHand.checkPairs(handBoard);
+        if (CheckHand.checkStraight(handBoard).getHand() != null) {
+            if (CheckHand.checkStraight(handBoard).getHand().getHandRank() > hand.getHand().getHandRank()) {
+                hand = CheckHand.checkStraight(handBoard);
             }
         }
-        return handTopCard;
-    }
-
-    private static void getHand(Player player, Card[] board) {
-
-            Card[] handBoard = new Card[7];
-            handBoard[0] = player.getPocketCard1(); // 1 и 2 карты массива - всегда карты игрока
-            handBoard[1] = player.getPocketCard2();
-            handBoard[2] = board[0];                // остальные - общий борд
-            handBoard[3] = board[1];
-            handBoard[4] = board[2];
-            handBoard[5] = board[3];
-            handBoard[6] = board[4];
-
-        /*
-        проверка на ФЛЭШ
-         */
-        String flush = CheckHand.checkFlush(handBoard);
-        Card[] flushHand = new Card[7];
-        if (flush.startsWith("FLUSH")) {
-            String[] parts = flush.split(" "); // разбиваем текст на слов
-            String suit = parts[2];                  // выделяем масть флэша
-
-            int j = 0;
-            for (int i = 0; i < handBoard.length; i++) {
-                String check = handBoard[i].getSuit().toString();
-                if (check.intern() == suit.intern()) {
-                    flushHand[j] = handBoard[i];         // отбираем все карты, которые составляют флэш
-                    j++;
-                }
+        if (CheckHand.checkFlush(handBoard).getHand() != null) {
+             if (CheckHand.checkFlush(handBoard).getHand().getHandRank() > hand.getHand().getHandRank()){
+                hand = CheckHand.checkFlush(handBoard);
             }
         }
-        Card flushTopCard = getHandTop(flushHand);       // определяем старшую карту комбинации
-        /*
-        конец проверки
-         */
-
-
-        /*
-        проверка на стрит
-         */
-        String straight = CheckHand.checkStraight(handBoard);
-        Card straightTopCard = null;
-        if (straight.startsWith("STRAIGHT")) {
-            String[] parts = straight.split(" "); // разбиваем текст на слов
-            String straightTop = parts[2];                  // выделяем имя старшей карты
-            for (int i = 0; i < handBoard.length; i++) {
-                if (handBoard[i].getRank().name() == straightTop.intern()) {
-                    straightTopCard = handBoard[i];
-                }
-            }
+        if (CheckHand.checkStraightFlush(handBoard).getHand() != null) {
+            hand = CheckHand.checkStraightFlush(handBoard);
         }
-        /*
-        конец проверки
-         */
-
-        /*
-        проверка на стрит-флэш
-         */
-        Card straightflushTopCard = null;
-        if (flushTopCard.getRankInt() == straightTopCard.getRankInt() && flushTopCard != null) {
-            straightflushTopCard = new Card(straightTopCard.getRank(), flushTopCard.getSuit());
+        if (CheckHand.checkRoyalFlush(handBoard).getHand() != null) {
+            hand = CheckHand.checkRoyalFlush(handBoard);
         }
-        /*
-        конец проверки
-         */
 
-        /*
-        проверка на роял-флэш
-         */
-        Card royalFlushTopCard = null;
-        if (straightflushTopCard != null && straightflushTopCard.getRankInt() == 14){
-            royalFlushTopCard = new Card(straightflushTopCard.getRank(), straightflushTopCard.getSuit());
-        }
-        /*
-        конец проверки
-         */
-
+        player.setHand(hand.getHand());
+        player.setHandTop(hand.getHandTopCard());
+        player.setHandCards(hand.getHandCards());
+        player.setKicker();
+        return  player;
     }
 
     public static void main(String[] args) {
+        Player player = new Player("You"); // приглашаем игроков
+        Player byvalyi = new Player("Бывалый");
+        Player balbes = new Player("Балбес");
 
-        Deck deck = new Deck(); // берем новую колоду
-        //deck.shuffle();         // тасуем колоду
+        while (true) {
+            Deck deck = new Deck(); // берем новую колоду
+            deck.shuffle();         // тасуем колоду
 
-        Player player = new Player(); // приглашаем игроков
-        BoldPlayer byvalyi = new BoldPlayer();
-        BoldPlayer balbes = new BoldPlayer();
+            // раздаем игрокам карты
+            player.setPocketCards(deck.pollCard(), deck.pollCard());
+            byvalyi.setPocketCards(deck.pollCard(), deck.pollCard());
+            balbes.setPocketCards(deck.pollCard(), deck.pollCard());
 
-        player.setPocketCards(deck.get(0), deck.get(1)); // раздаем игрокам карты
-        byvalyi.setPocketCards(deck.get(2), deck.get(3));
-        balbes.setPocketCards(deck.get(4), deck.get(5));
+            Card[] board = new Card[5];
+            board[0] = deck.pollCard();  // раздаем флоп
+            board[1] = deck.pollCard();
+            board[2] = deck.pollCard();
+            board[3] = deck.pollCard(); // выдаем тёрн
+            board[4] = deck.pollCard(); // выдаем ривер
 
-        Card[] board = new Card[5];
-        board[0] = deck.get(6);  // раздаем флоп
-        board[1] = deck.get(7);
-        board[2] = deck.get(8);
+            // выводим на экран все карты
+            showBoard(board);
+            player.showCards();
+            balbes.showCards();
+            byvalyi.showCards();
 
-        player.showCards();
-        showBoard(board);
+            // определяем победителя
+            Player winner;
+            Player p1 = getHand(player, board);
+            Player p2 = getHand(balbes, board);
+            Player p3 = getHand(byvalyi, board);
 
-        player.action(); // делаем "ставки"
-        byvalyi.action();
-        balbes.action();
+            Player[] players = new Player[3];
+            players[0] = p1;
+            players[1] = p2;
+            players[2] = p3;
+            Arrays.sort(players);
 
-        board[3] = deck.get(10); // выдаем тёрн
+            if (players[0].getHand().getHandRank() - players[1].getHand().getHandRank() > 0) {
+                System.out.println(players[0].getName() + " wins with " + players[0].getHand().toString());
+            }
 
-        player.showCards();
-        showBoard(board);
+//            if (player.getHand().getHandRank() > balbes.getHand().getHandRank()
+//                    && player.getHand().getHandRank() > byvalyi.getHand().getHandRank()) {
+//                winner = player;
+//            }
+//            if (balbes.getHand().getHandRank() > player.getHand().getHandRank()
+//                    && balbes.getHand().getHandRank() > byvalyi.getHand().getHandRank()) {
+//                winner = balbes;
+//            }
 
-        player.action(); // делаем "ставки"
-        byvalyi.action();
-        balbes.action();
+            String bet = player.action(); // делаем "ставки"
+            if (bet.intern() == "s") {
+                return;
+            }
 
-        board[4] = deck.get(12); // выдаем ривер
-
-  //      player.showCards();
-        showBoard(board);
-
-        balbes.showCards();
-
-
- //       getHand(player, board);// проверяем комбинации
-//        getHand(byvalyi, board);
- //       getHand(balbes, board);
-
+        }
     }
 
 }
