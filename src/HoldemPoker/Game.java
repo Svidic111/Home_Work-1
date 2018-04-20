@@ -14,6 +14,15 @@ public class Game {
         System.out.println();
     }
 
+    private static void showCards(Card[] cards) {
+        for (Card c: cards) {
+            if (c != null) {
+                System.out.print("[" + c.toString() + "] ");
+            }
+        }
+        System.out.println();
+    }
+
     private static Player getHand(Player player, Card[] board) {
 
         Card[] handBoard = new Card[7];
@@ -79,7 +88,6 @@ public class Game {
             byvalyi.showCards();
 
             // определяем победителя
-            Player winner;
             Player p1 = getHand(player, board);
             Player p2 = getHand(balbes, board);
             Player p3 = getHand(byvalyi, board);
@@ -90,20 +98,54 @@ public class Game {
             players[2] = p3;
             Arrays.sort(players);
 
-            if (players[0].getHand().getHandRank() - players[1].getHand().getHandRank() > 0) {
-                System.out.println(players[0].getName() + " wins with " + players[0].getHand().toString());
+            if (players[2].getHand().getHandRank() - players[1].getHand().getHandRank() > 0) {
+                System.out.println(players[2].getName() + " wins with " + players[2].getHand().toString());
+                showCards(players[2].getHandCards());
             }
 
-//            if (player.getHand().getHandRank() > balbes.getHand().getHandRank()
-//                    && player.getHand().getHandRank() > byvalyi.getHand().getHandRank()) {
-//                winner = player;
-//            }
-//            if (balbes.getHand().getHandRank() > player.getHand().getHandRank()
-//                    && balbes.getHand().getHandRank() > byvalyi.getHand().getHandRank()) {
-//                winner = balbes;
-//            }
+            // если комбинации одинаковые, определяем победителя по старшей карте комбинации
+            if (players[2].getHand().getHandRank() - players[1].getHand().getHandRank() == 0) {
+                if (players[2].getHandTop().getRankInt() - players[1].getHandTop().getRankInt() > 0) {
+                    System.out.println(players[2].getName() + " wins with " + players[2].getHand().toString());
+                    showCards(players[2].getHandCards());
+                }
+                if (players[2].getHandTop().getRankInt() - players[1].getHandTop().getRankInt() < 0) {
+                    System.out.println(players[1].getName() + " wins with " + players[1].getHand().toString());
+                    showCards(players[1].getHandCards());
+                }
+                // если и страшая карта одинаковая, определяем по кикеру
+                if (players[2].getHandTop().getRankInt() - players[1].getHandTop().getRankInt() == 0) {
+                    if (players[2].getKicker().getRankInt() - players[1].getKicker().getRankInt() > 0) {
+                        System.out.println(players[2].getName() + " wins with " + players[2].getHand().toString()
+                                + " and kicker "  + players[2].getKicker().toString());
+                        showCards(players[2].getHandCards());
+                    }
+                    if (players[2].getKicker().getRankInt() - players[1].getKicker().getRankInt() < 0) {
+                        System.out.println(players[1].getName() + " wins with " + players[1].getHand().toString()
+                                + " and kicker "  + players[1].getKicker().toString());
+                        showCards(players[1].getHandCards());
+                    }
+                    // если 1-й кикер тоже совпадает, берем второй кикер
+                    if (players[2].getKicker().getRankInt() - players[1].getKicker().getRankInt() == 0) {
+                        if (players[2].getKicker2().getRankInt() - players[1].getKicker2().getRankInt() > 0) {
+                            System.out.println(players[2].getName() + " wins with " + players[2].getHand().toString()
+                            + " and kicker "  + players[2].getKicker2().toString());
+                            showCards(players[2].getHandCards());
+                        }
+                        if (players[2].getKicker2().getRankInt() - players[1].getKicker2().getRankInt() < 0) {
+                            System.out.println(players[1].getName() + " wins with " + players[1].getHand().toString()
+                                    + " and kicker "  + players[1].getKicker2().toString());
+                            showCards(players[1].getHandCards());
+                        }
+                        // тут уже ничья
+                        if (players[2].getKicker2().getRankInt() - players[1].getKicker2().getRankInt() == 0) {
+                            System.out.println("It is a draw!");
+                        }
+                    }
+                }
+            }
 
-            String bet = player.action(); // делаем "ставки"
+            String bet = player.action(); // продолжаем или выходим из игры
             if (bet.intern() == "s") {
                 return;
             }

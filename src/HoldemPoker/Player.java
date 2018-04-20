@@ -10,6 +10,8 @@ public class Player implements HoldemPoker.Abstractions.Player, Comparable<Playe
     private Card[] handCards;
     private Card handTop;
     private Card kicker;
+    private Card kicker2;
+
 
     public Player(String name) {
         this.name = name;
@@ -17,6 +19,9 @@ public class Player implements HoldemPoker.Abstractions.Player, Comparable<Playe
 
     public Card getKicker() {
         return kicker;
+    }
+    public Card getKicker2() {
+        return kicker2;
     }
     public String getName() {
         return name;
@@ -48,7 +53,11 @@ public class Player implements HoldemPoker.Abstractions.Player, Comparable<Playe
 
         if (pocketCard1.getRankInt() > pocketCard2.getRankInt()) {
             this.kicker = pocketCard1;
-        } else this.kicker = pocketCard2;
+            this.kicker2 = pocketCard2;
+        } else {
+            this.kicker = pocketCard2;
+            this.kicker2 = pocketCard1;
+        }
     }
 
     public void setHandTop(Card handTop) {
