@@ -91,6 +91,9 @@ public class Player implements HoldemPoker.Abstractions.Player, Comparable<Playe
 
     @Override
     public int compareTo(Player o) {
+        if (this.hand.getHandRank() - o.hand.getHandRank() == 0) {
+            return this.getKicker().getRankInt() - o.getKicker().getRankInt();
+        }
         return this.hand.getHandRank() - o.hand.getHandRank();
     }
 }

@@ -1,10 +1,12 @@
 package HoldemPoker;
 
-import java.util.Arrays;
+import java.util.*;
+
 
 public class Game {
 
     private static void showBoard(Card[] board) {
+
         System.out.print("Board: ");
         for (Card c: board) {
             if (c != null) {
@@ -92,58 +94,12 @@ public class Game {
             Player p2 = getHand(balbes, board);
             Player p3 = getHand(byvalyi, board);
 
-            Player[] players = new Player[3];
-            players[0] = p1;
-            players[1] = p2;
-            players[2] = p3;
-            Arrays.sort(players);
-
-            if (players[2].getHand().getHandRank() - players[1].getHand().getHandRank() > 0) {
-                System.out.println(players[2].getName() + " wins with " + players[2].getHand().toString());
-                showCards(players[2].getHandCards());
-            }
-
-            // если комбинации одинаковые, определяем победителя по старшей карте комбинации
-            if (players[2].getHand().getHandRank() - players[1].getHand().getHandRank() == 0) {
-                if (players[2].getHandTop().getRankInt() - players[1].getHandTop().getRankInt() > 0) {
-                    System.out.println(players[2].getName() + " wins with " + players[2].getHand().toString());
-                    showCards(players[2].getHandCards());
-                }
-                if (players[2].getHandTop().getRankInt() - players[1].getHandTop().getRankInt() < 0) {
-                    System.out.println(players[1].getName() + " wins with " + players[1].getHand().toString());
-                    showCards(players[1].getHandCards());
-                }
-                // если и страшая карта одинаковая, определяем по кикеру
-                if (players[2].getHandTop().getRankInt() - players[1].getHandTop().getRankInt() == 0) {
-                    if (players[2].getKicker().getRankInt() - players[1].getKicker().getRankInt() > 0) {
-                        System.out.println(players[2].getName() + " wins with " + players[2].getHand().toString()
-                                + " and kicker "  + players[2].getKicker().toString());
-                        showCards(players[2].getHandCards());
-                    }
-                    if (players[2].getKicker().getRankInt() - players[1].getKicker().getRankInt() < 0) {
-                        System.out.println(players[1].getName() + " wins with " + players[1].getHand().toString()
-                                + " and kicker "  + players[1].getKicker().toString());
-                        showCards(players[1].getHandCards());
-                    }
-                    // если 1-й кикер тоже совпадает, берем второй кикер
-                    if (players[2].getKicker().getRankInt() - players[1].getKicker().getRankInt() == 0) {
-                        if (players[2].getKicker2().getRankInt() - players[1].getKicker2().getRankInt() > 0) {
-                            System.out.println(players[2].getName() + " wins with " + players[2].getHand().toString()
-                            + " and kicker "  + players[2].getKicker2().toString());
-                            showCards(players[2].getHandCards());
-                        }
-                        if (players[2].getKicker2().getRankInt() - players[1].getKicker2().getRankInt() < 0) {
-                            System.out.println(players[1].getName() + " wins with " + players[1].getHand().toString()
-                                    + " and kicker "  + players[1].getKicker2().toString());
-                            showCards(players[1].getHandCards());
-                        }
-                        // тут уже ничья
-                        if (players[2].getKicker2().getRankInt() - players[1].getKicker2().getRankInt() == 0) {
-                            System.out.println("It is a draw!");
-                        }
-                    }
-                }
-            }
+            TreeSet<Player> playerSet = new TreeSet<>();
+            playerSet.add(p1);
+            playerSet.add(p2);
+            playerSet.add(p3);
+            System.out.println(playerSet.last().getName() + " wins with " + playerSet.last().getHand().toString());
+            showCards(playerSet.last().getHandCards());
 
             String bet = player.action(); // продолжаем или выходим из игры
             if (bet.intern() == "s") {
